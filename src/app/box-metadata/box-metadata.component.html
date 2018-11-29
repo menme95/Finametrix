@@ -1,0 +1,13 @@
+<div class="card mb-4 box-shadow" *ngIf="metadata" (click)="select()">
+	<div class="card-header">
+		<h4 class="my-0 font-weight-normal">{{metadata.name}}</h4>
+	</div>
+	<div class="card-body">
+		<h1 class="card-title pricing-card-title">{{metadata.code}}</h1>
+		<ul class="list-unstyled mt-3 mb-4">
+			<li>Market Cap: {{changeDivisa(lastInfo.marketCup)}} {{currentCurrency.symbol}}</li>
+			<li>Close price: {{changeDivisa(lastInfo.close)}} {{currentCurrency.symbol}}</li>
+			<li>Volumen: {{changeDivisa(lastInfo.volume)}} {{currentCurrency.symbol}}</li>
+		</ul>
+	</div>
+</div>
