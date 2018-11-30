@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 	ngOnInit() {
 		this.bitcoinService.getBitcoin().subscribe((data: Cryptocurrency) => {
 			this.coins[0] = data;
-			this.showGraphic(data);
+			this.showGraphic(data, 30, 0);
 		})
 		this.etherumService.getEthereum().subscribe((data) => {
 			this.coins[1] = data
@@ -58,16 +58,16 @@ export class HomeComponent implements OnInit {
 		this.divisa = CurrencyEnum.getCurrency(this.divisa);
 	}
 
-	public showGraphic(data) {
+	public showGraphic(data: Cryptocurrency, init: number, end: number) {
 		var labels = [];
 		var market = [];
 		var closePrice = [];
 		var volume = [];
 		this.selected = data;
 		if (data.historic) {
-			let aux = data.historic.splice(0,30)
+			let aux = data.historic.slice(end, init)
 			aux.forEach(element => {
-				labels.push(element.date.getDay() + '/' + element.date.getMonth() + '/' + element.date.getFullYear());
+				labels.push(element.date.toISOString().substring(0, 10));
 				market.push(element.marketCup);
 				closePrice.push(element.close);
 				volume.push(element.volume);
@@ -129,13 +129,23 @@ export class HomeComponent implements OnInit {
 	}
 
 	public recalculateGraph() {
-		let init = new Date(this.fromDate.year, this.fromDate.month-1, this.fromDate.day);
-		let end = new Date(this.fromDate.year, this.fromDate.month-1, this.fromDate.day);
 
-		let index0 = _.findIndex(this.coins[0].historic, {date: init})
-		let index1 = _.findIndex(this.coins[0].historic, {date: end})
+		if (this.fromDate && this.toDate) {
 
-		this.showGraphic(this.coins[0].historic.slice(index0, index1))
+			//let init = new Date(, this.fromDate.month - 1, this.fromDate.day);
+			//let end = new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day);
+
+			let index0 = _.findIndex(this.coins[0].historic, function (o, init) {
+				return (o.date.toISOString().substring(0, 10)) === (this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day)
+			}.bind(this))
+			let index1 = _.findIndex(this.coins[0].historic, function (o) {
+				return (o.date.toISOString().substring(0, 10)) === (this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day)
+			}.bind(this))
+			if (index0 >= 0 && index1 >= 0)
+				this.showGraphic(this.selected, index0, index1)
+		}
+
 	}
 
 }
+

@@ -22,7 +22,7 @@
 <div class="container">
 	<div class="row card-deck mb-3 text-center" *ngIf="coins && coins[0] && coins[0].historic">
 		<app-box-metadata *ngFor="let element of coins; let i = index" [metadata]="element.metadata" [lastInfo]="element.historic[0]"
-		 [currentCurrency]='divisa' (selected)="showGraphic(element)"></app-box-metadata>
+		 [currentCurrency]='divisa' (selected)="showGraphic(element, 30, 0)"></app-box-metadata>
 	</div>
 </div>
 
