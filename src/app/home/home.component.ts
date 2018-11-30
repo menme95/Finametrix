@@ -60,13 +60,17 @@ export class HomeComponent implements OnInit {
 
 	public showGraphic(data) {
 		var labels = [];
-		var amount = [];
+		var market = [];
+		var closePrice = [];
+		var volume = [];
 		this.selected = data;
 		if (data.historic) {
-
-			data.historic.forEach(element => {
-				labels.push(element.date);
-				amount.push(element.marketCup)
+			let aux = data.historic.splice(0,30)
+			aux.forEach(element => {
+				labels.push(element.date.getDay() + '/' + element.date.getMonth() + '/' + element.date.getFullYear());
+				market.push(element.marketCup);
+				closePrice.push(element.close);
+				volume.push(element.volume);
 			});
 			this.chart = new Chart('realtime', {
 				type: 'line',
@@ -74,38 +78,27 @@ export class HomeComponent implements OnInit {
 					labels: labels,
 					datasets: [
 						{
-							label: 'marketCup',
+							label: 'Market Cup',
 							fill: false,
-							data: amount,
-							backgroundColor: '#168ede',
+							data: market,
+							backgroundColor: '#d1eafa',
 							borderColor: '#168ede'
+						},
+						{
+							label: 'Close',
+							fill: false,
+							data: closePrice,
+							backgroundColor: '#e6ccff',
+							borderColor: '#7300e6'
+						},
+						{
+							label: 'Volume',
+							fill: false,
+							data: volume,
+							backgroundColor: '#f2ffcc',
+							borderColor: '#86b300'
 						}
 					]
-				},
-				options: {
-					tooltips: {
-						enabled: false
-					},
-					legend: {
-						display: true,
-						position: 'bottom',
-						labels: {
-							fontColor: 'white'
-						}
-					},
-					scales: {
-						yAxes: [{
-							ticks: {
-								fontColor: "white"
-							}
-						}],
-						xAxes: [{
-							ticks: {
-								fontColor: "white",
-								beginAtZero: true
-							}
-						}]
-					}
 				}
 			});
 		}
