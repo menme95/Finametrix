@@ -1,23 +1,26 @@
-<div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderBy" (ngModelChange)="onChange()">
-	<label ngbButtonLabel class="btn-primary">
-		<input ngbButton type="radio" value="marketCup">Market Cap
-	</label>
-	<label ngbButtonLabel class="btn-primary">
-		<input ngbButton type="radio" value="close"> Close price
-	</label>
-	<label ngbButtonLabel class="btn-primary">
-		<input ngbButton type="radio" value="volume"> Volumen
-	</label>
+<div class="row">
+		<div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderBy" (ngModelChange)="onChange()">
+				<label ngbButtonLabel class="btn-primary">
+					<input ngbButton type="radio" value="marketCup">Market Cap
+				</label>
+				<label ngbButtonLabel class="btn-primary">
+					<input ngbButton type="radio" value="close"> Close price
+				</label>
+				<label ngbButtonLabel class="btn-primary">
+					<input ngbButton type="radio" value="volume"> Volumen
+				</label>
+			</div>
+			
+			<div class="input-group col-md-3">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="inputGroupSelect01">Currency</label>
+				</div>
+				<select class="custom-select" id="inputGroupSelect01" [(ngModel)]="divisa" (ngModelChange)="onChangeDivisa()">
+					<option *ngFor="let element of all" [value]="element" >{{element}}</option>
+				</select>
+			</div>
 </div>
 
-<div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="divisa" (ngModelChange)="onChangeDivisa()">
-	<label ngbButtonLabel class="btn-primary">
-		<input ngbButton type="radio" value="USD">USD
-	</label>
-	<label ngbButtonLabel class="btn-primary">
-		<input ngbButton type="radio" value="EUR"> EUR
-	</label>
-</div>
 
 <div class="container">
 	<div class="row card-deck mb-3 text-center" *ngIf="coins && coins[0] && coins[0].historic">

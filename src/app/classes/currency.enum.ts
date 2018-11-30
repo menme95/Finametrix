@@ -10,6 +10,8 @@ export class CurrencyEnum {
 			case this.EURO.name:
 				return this.EURO;
 				break;
+			default:
+				return { name: name, symbol: name };
 		}
 	}
 }

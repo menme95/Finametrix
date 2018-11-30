@@ -27,13 +27,18 @@ export class HomeComponent implements OnInit {
 	public toDate: NgbDate;
 	public hoveredDate: NgbDate;
 	public selected;
-
+	public all: Array<any> = new Array<any>();
 	constructor(private readonly bitcoinService: BitcoinService,
 		private readonly etherumService: EthereumService,
 		private readonly ripleService: RippleService,
+		private readonly currencyValueService: CurrencyValuesService,
 		calendar: NgbCalendar) {
 		this.fromDate = calendar.getToday();
 		this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+		this.currencyValueService.currentValues.subscribe((value) => {
+			if(value.rates)
+				this.all = Object.keys(value.rates)
+		})
 	}
 
 	ngOnInit() {
@@ -132,13 +137,10 @@ export class HomeComponent implements OnInit {
 
 		if (this.fromDate && this.toDate) {
 
-			//let init = new Date(, this.fromDate.month - 1, this.fromDate.day);
-			//let end = new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day);
-
-			let index0 = _.findIndex(this.coins[0].historic, function (o, init) {
+			let index0 = _.findIndex(this.selected.historic, function (o) {
 				return (o.date.toISOString().substring(0, 10)) === (this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day)
 			}.bind(this))
-			let index1 = _.findIndex(this.coins[0].historic, function (o) {
+			let index1 = _.findIndex(this.selected.historic, function (o) {
 				return (o.date.toISOString().substring(0, 10)) === (this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day)
 			}.bind(this))
 			if (index0 >= 0 && index1 >= 0)
